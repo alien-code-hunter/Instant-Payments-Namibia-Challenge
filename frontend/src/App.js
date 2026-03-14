@@ -54,7 +54,7 @@ function App() {
   const [errors, setErrors] = useState({});
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [clientReference] = useState(generateClientReference);
+  const [clientReference, setClientReference] = useState(generateClientReference);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -109,13 +109,15 @@ function App() {
     setForm(INITIAL_FORM);
     setErrors({});
     setResult(null);
+    setClientReference(generateClientReference());
   }
 
   return (
     <div className="app-container">
       <header className="app-header">
         <h1>IPN P2P Payment</h1>
-        <p className="subtitle">Instant Payments Namibia – Person-to-Person Transfer</p>
+        <p className="subtitle">Instant Payments Namibia</p>
+        <p className="subtitle">Person-to-Person Transfer</p>
       </header>
 
       <main className="app-main">

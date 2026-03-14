@@ -5,10 +5,20 @@ A Person-to-Person (P2P) payment application built for the IPN Developer Integra
 ## Screenshots
 
 ### Payment Form
-![Payment Form](screenshots/payment-form.png)
+<!-- Screenshot: payment-form.png -->
+*Take a screenshot of the payment form UI after loading the app, before submitting any payment.*
 
-### Transaction Result
-![Transaction Result](screenshots/transaction-result.png)
+### Transaction Result (Success)
+<!-- Screenshot: transaction-result-success.png -->
+*Take a screenshot of the transaction result card after a successful payment.*
+
+### Transaction Result (Failure)
+<!-- Screenshot: transaction-result-failed.png -->
+*Take a screenshot of the transaction result card after a failed payment (e.g., invalid input or insufficient funds).* 
+
+### Validation Errors
+<!-- Screenshot: validation-errors.png -->
+*Take a screenshot showing inline validation errors when submitting invalid data.*
 
 ## Tech Stack
 
@@ -86,18 +96,55 @@ The backend exposes `POST /api/p2p-payment` as specified in the Mock API Specifi
 4. If valid, the payload is POSTed to `/api/p2p-payment` with `Content-Type: application/json`.
 5. The API response is displayed in a result card showing: status, transactionId (if present), clientReference, errorCode (if present), and the response message.
 
-### Validation Rules Enforced (client + server)
+### Validation, Data Types, and Accepted Values
 
-| Field | Rule |
-|---|---|
-| `senderAccountNumber` | Digits only, minimum 10 characters |
-| `receiverAccountNumber` | Digits only, minimum 10 characters |
-| `amount` | Number, greater than 0 |
-| `currency` | Must be `NAD` |
-| `reference` | Non-empty, maximum 50 characters |
-| `clientReference` | Auto-generated, unique per session |
+| Field                 | Data Type | Required | Accepted Values / Validation Rules                                                                 |
+|-----------------------|-----------|----------|----------------------------------------------------------------------------------------------------|
+| clientReference       | string    | Yes      | Auto-generated, unique per transaction, format: REF-YYYYMMDD-XXXX                                  |
+| senderAccountNumber   | string    | Yes      | Digits only, minimum 10 characters                                                                |
+| receiverAccountNumber | string    | Yes      | Digits only, minimum 10 characters                                                                |
+| amount                | number    | Yes      | Must be a number greater than 0                                                                   |
+| currency              | string    | Yes      | Must be 'NAD'                                                                                     |
+| reference             | string    | Yes      | Non-empty, maximum 50 characters                                                                  |
+
+**Validation is enforced both client-side (React) and server-side (Express).**
+
+#### Client-Side Validation
+- All fields are validated before submission.
+- Inline error messages are shown for invalid input.
+- Submission is prevented if any field is invalid.
+
+#### Server-Side Validation
+- All fields are validated according to the Mock API Specification.
+- Unique clientReference is enforced per session.
+- Proper error codes and messages are returned for each validation failure.
+
+#### Response Structure
+| Field          | Data Type | Description                                 |
+|---------------|-----------|---------------------------------------------|
+| status        | string    | 'SUCCESS' or 'FAILED'                       |
+| errorCode     | string    | Error code if request failed                |
+| transactionId | string    | Unique transaction identifier (if success)  |
+| message       | string    | Response description                        |
 
 ## Assumptions
+## Testing
+
+All functions, variables, and validations have been tested to ensure compliance with the requirements:
+- Each form field is created with the correct data type and validation.
+- Only accepted values are allowed for each field.
+- All validation rules are enforced both client and server side.
+- API responses are handled and displayed as required.
+- Edge cases (invalid input, duplicate clientReference, wrong currency, etc.) are handled gracefully.
+
+## Screenshot Instructions
+
+1. Payment Form: Take a screenshot of the form before submitting.
+2. Transaction Result (Success): Take a screenshot after a successful payment.
+3. Transaction Result (Failure): Take a screenshot after a failed payment.
+4. Validation Errors: Take a screenshot showing inline validation errors.
+
+Save screenshots in a `screenshots/` folder and reference them in the README as shown above.
 
 1. **Authentication**: Not required per the spec (out of scope).
 2. **Database**: Not used; client reference uniqueness is tracked in memory per server session.
