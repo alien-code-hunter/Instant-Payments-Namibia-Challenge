@@ -6,6 +6,7 @@ A Person-to-Person (P2P) payment application built for the IPN Developer Integra
 
 ### Payment Form
 <!-- Screenshot: payment-form.png -->
+
 *Take a screenshot of the payment form UI after loading the app, before submitting any payment.*
 
 ### Transaction Result (Success)

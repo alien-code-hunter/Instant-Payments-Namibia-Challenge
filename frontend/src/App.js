@@ -117,7 +117,7 @@ function App() {
       <header className="app-header">
         <h1>IPN P2P Payment</h1>
         <p className="subtitle">Instant Payments Namibia</p>
-        <p className="subtitle">Person-to-Person Transfer</p>
+        <p className="subtitle">Person - to - Person Transfer</p>
       </header>
 
       <main className="app-main">
