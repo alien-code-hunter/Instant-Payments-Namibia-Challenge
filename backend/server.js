@@ -7,9 +7,9 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Track used client references to ensure uniqueness per server session.
-// NOTE: This is an in-memory store for the mock API only. References reset on server restart
-// and will not work across multiple instances. Database persistence is out of scope per the spec.
+// Track used client references to ensure uniqueness for every server session (this covers refreshed sessions).
+// NOTE: in-memory store for the mock API only in memory stored only. References reset on server restart
+// and will not work across multiple sessions. Database persistence is out of scope per the spec.
 const usedClientReferences = new Set();
 
 app.post('/api/p2p-payment', (req, res) => {
@@ -48,7 +48,7 @@ app.post('/api/p2p-payment', (req, res) => {
     });
   }
 
-  // Validate senderAccountNumber: numeric only, minimum length 10
+  // Validate senderAccountNumber: must be numeric only, minimum length 10
   if (!/^\d+$/.test(senderAccountNumber)) {
     return res.status(400).json({
       status: 'FAILED',
@@ -66,7 +66,7 @@ app.post('/api/p2p-payment', (req, res) => {
     });
   }
 
-  // Validate receiverAccountNumber: numeric only, minimum length 10
+  // Validate receiverAccountNumber: must be numeric only, minimum length 10
   if (!/^\d+$/.test(receiverAccountNumber)) {
     return res.status(400).json({
       status: 'FAILED',
